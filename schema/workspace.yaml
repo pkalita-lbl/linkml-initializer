@@ -1,0 +1,24 @@
+id: https://w3id.org/linkml/workspace
+name: workspace
+title: LinkML Workspace Parameters
+description: >-
+  This model describes parameters provided by a user when creating a LinkML workspace
+license: https://creativecommons.org/publicdomain/zero/1.0/
+
+prefixes:
+  linkml: https://w3id.org/linkml/
+imports:
+  - linkml:types
+
+default_range: string
+
+classes:
+  WorkspaceParameters:
+    tree_root: true
+    attributes:
+      name: 
+        required: true
+      description:
+      author:
+        required: true
+        pattern: "^[^<]+ <[^@]+@[^>]+>$"

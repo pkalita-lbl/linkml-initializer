@@ -1,0 +1,50 @@
+{
+   "$defs": {
+      "WorkspaceParameters": {
+         "additionalProperties": false,
+         "description": "",
+         "properties": {
+            "author": {
+               "pattern": "^[^<]+ <[^@]+@[^>]+>$",
+               "type": "string"
+            },
+            "description": {
+               "type": "string"
+            },
+            "name": {
+               "type": "string"
+            }
+         },
+         "required": [
+            "name",
+            "author"
+         ],
+         "title": "WorkspaceParameters",
+         "type": "object"
+      }
+   },
+   "$id": "https://w3id.org/linkml/workspace",
+   "$schema": "http://json-schema.org/draft-07/schema#",
+   "additionalProperties": false,
+   "metamodel_version": "1.7.0",
+   "properties": {
+      "author": {
+         "pattern": "^[^<]+ <[^@]+@[^>]+>$",
+         "type": "string"
+      },
+      "description": {
+         "type": "string"
+      },
+      "name": {
+         "type": "string"
+      }
+   },
+   "required": [
+      "name",
+      "author"
+   ],
+   "title": "workspace",
+   "type": "object",
+   "version": null
+}
+
