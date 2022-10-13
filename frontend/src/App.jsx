@@ -1,14 +1,33 @@
 import { useState } from 'react'
 import { saveAs } from 'file-saver'
-import Form from '@rjsf/core'
 import schema from './schema.json'
 import './App.css'
+import { useForm } from 'react-hook-form';
+import { ajvResolver } from '@hookform/resolvers/ajv';
+import { pickBy } from 'lodash'
+import { MantineProvider, TextInput, Button, Box } from '@mantine/core';
+
+// These fields violate Ajv's default strict mode setting
+delete schema['metamodel_version'];
+delete schema['version'];
 
 function App() {
-  const [formData, setFormData] = useState(null)
+  const { 
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    resolver: async (data, context, options) => {
+      // you can debug your validation schema here
+      const cleanData = pickBy(data)
+      // console.log('formData', cleanData)
+      // console.log('validation result', await ajvResolver(schema)(cleanData, context, options))
+      return ajvResolver(schema)(cleanData, context, options)
+    },
+  })
   const [filename, setFilename] = useState('')
 
-  const handleGenerate = async (e) => {
+  const handleGenerate = async (formData) => {
     setFilename('')
     const filename = formData.name + '.zip'
     const response = await fetch('http://localhost:8000/ws', {
@@ -24,21 +43,27 @@ function App() {
   }
 
   return (
-    <>
-      <Form 
-        schema={schema} 
-        formData={formData}
-        onChange={e => {
-          setFilename('')
-          setFormData(e.formData)
-        }}
-        onSubmit={handleGenerate}
-        noHtml5Validate
-        uiSchema={{
-          "ui:title": "",
-          "ui:order": ["name", "description", "author"]
-        }}
-      />
+    <MantineProvider withGlobalStyles withNormalizeCSS>
+      <Box sx={{ maxWidth: 300 }} mx="auto">
+        <form onSubmit={handleSubmit(handleGenerate)}>
+          <TextInput 
+            label='Name'
+            error={errors.name?.message}
+            {...register('name')}
+          />
+          <TextInput 
+            label='Description'
+            error={errors.description?.message}
+            {...register('description')}
+          />
+          <TextInput
+            label='Author'
+            error={errors.author?.message}
+            {...register('author')}
+          />
+          <Button type="submit" mt="md">Submit</Button>
+        </form>
+      </Box>
 
       {filename && (
         <div>
@@ -51,7 +76,7 @@ make setup`
           }</pre>
         </div>
       )}
-    </>
+    </MantineProvider>
   )
 }
 
