@@ -16,9 +16,24 @@ classes:
   WorkspaceParameters:
     tree_root: true
     attributes:
-      name: 
+      project_name:
         required: true
-      description:
-      author:
+      github_org:
         required: true
-        pattern: "^[^<]+ <[^@]+@[^>]+>$"
+      project_description:
+      full_name:
+        required: true
+      email:
+        required: true
+        pattern: "^[\\w\\-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"
+      license:
+        required: true
+        range: Licenses
+        
+enums:
+  Licenses:
+    permissible_values:
+      MIT:
+      "BSD-3":
+      "GNU GPL v3.0":
+      "Apache Software License 2.0":
