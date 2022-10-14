@@ -1,0 +1,3 @@
+[submodule "linkml-project-cookiecutter"]
+	path = linkml-project-cookiecutter
+	url = https://github.com/linkml/linkml-project-cookiecutter

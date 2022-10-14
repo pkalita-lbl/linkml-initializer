@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import saveAs from 'file-saver'
 import { MantineProvider, Box } from '@mantine/core';
 import ProjectDetailsForm from './components/ProjectDetailsForm';
 
@@ -7,7 +8,7 @@ function App() {
 
   const handleGenerate = async (formData) => {
     setFilename('')
-    const filename = formData.name + '.zip'
+    const filename = formData.project_name + '.zip'
     const response = await fetch('http://localhost:8000/ws', {
       method: 'POST',
       headers: {
