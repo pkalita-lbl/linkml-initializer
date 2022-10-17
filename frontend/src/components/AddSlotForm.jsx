@@ -4,6 +4,7 @@ import { Button, TextInput, Text, Checkbox, Select } from "@mantine/core";
 import YAML from 'yaml'
 
 import types from '../types.json'
+import { ensureYamlMap } from "../utils";
 
 const DEFAULT_TYPES = Object.entries(types.types).map(([type, definition]) => ({
   label: type,
@@ -18,20 +19,12 @@ const SelectTypeItem = forwardRef(({ label, description, ...rest }, ref) => (
   </div>
 ))
 
-function AddSlotForm({ handleParsedDoc }) {
+function AddSlotForm({ handleParsedDoc, classOptions }) {
   const { register, handleSubmit, reset, control, formState: { errors } } = useForm()
 
   function handleAddSlot(formData) {
     handleParsedDoc(parsed => {
-      let slots = parsed.get('slots', true)
-      if (!slots) {
-        slots = new YAML.Document(new YAML.YAMLMap())
-        parsed.add({ key: 'slots', value: slots })
-      } else if (!YAML.isMap(slots)) {
-        parsed.delete('slots')
-        slots = new YAML.Document(new YAML.YAMLMap())
-        parsed.add({ key: 'slots', value: slots })
-      }
+      const slots = ensureYamlMap(parsed, 'slots')
 
       if (slots.has(formData.name)) {
         throw new Error(`Schema already has a slot named ${formData.name}. Try removing the existing one first.`)
@@ -49,11 +42,19 @@ function AddSlotForm({ handleParsedDoc }) {
     })
   }
 
+  const types = classOptions
+    .map(cls => ({
+      label: cls,
+      value: cls,
+      description: 'A class defined by your schema'
+    }))
+    .concat(DEFAULT_TYPES)
+
   return (
     <form onSubmit={handleSubmit(handleAddSlot)}>
       <Text size="sm" mb="lg">
         LinkML encourages you to define class attributes outside of class definitions. We call those standalone 
-        attributes "slots" and they can be reused in many classes. See the <a href="https://linkml.io/linkml/intro/tutorial07.html" target="_blank" rel="noopener">documentation</a> for 
+        attributes "slots" and they can be reused in many classes. See the <a href="https://linkml.io/linkml/schemas/models.html#slots" target="_blank" rel="noopener">documentation</a> for 
         more information.
       </Text>
       <TextInput 
@@ -75,7 +76,7 @@ function AddSlotForm({ handleParsedDoc }) {
         render={({ field: { onChange, value } }) => (
           <Select 
             label='Range' 
-            data={DEFAULT_TYPES} 
+            data={types} 
             itemComponent={SelectTypeItem}
             searchable
             maxDropdownHeight={400}

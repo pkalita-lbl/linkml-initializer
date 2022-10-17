@@ -4,6 +4,7 @@ import Editor from "@monaco-editor/react";
 import { Box, Grid, Accordion,  Alert } from "@mantine/core";
 import YAML from 'yaml'
 import AddSlotForm from "../components/AddSlotForm";
+import AddClassForm from "../components/AddClassForm";
 
 const initialDoc = new YAML.Document({})
 initialDoc.commentBefore = ' My LinkML schema'
@@ -17,6 +18,8 @@ function Edit() {
   const editorRef = useRef(null)
   const [doc, setDoc] = useState(initialDoc)
   const [docErrors, setDocErrors] = useState(null)
+  const [slotNames, setSlotNames] = useState([])
+  const [classNames, setClassNames] = useState([])
 
   function handleEditorDidMount(editor) {
     editorRef.current = editor
@@ -37,6 +40,10 @@ function Edit() {
     }
 
     setDoc(parsed)
+
+    const parsedObj = parsed.toJS()
+    setSlotNames(Object.keys(parsedObj.slots || {}))
+    setClassNames(Object.keys(parsedObj.classes || {}))
   }
 
   return (
@@ -69,19 +76,17 @@ function Edit() {
         </Grid.Col>
         <Grid.Col span={4}>
           <Accordion>
-            <Accordion.Item value="add-class">
-              <Accordion.Control>Add Class</Accordion.Control>
-              <Accordion.Panel>
-                <div>Name...</div>
-                <div>Descriptions...</div>
-                <div>Slots...</div>
-              </Accordion.Panel>
-            </Accordion.Item>
-
             <Accordion.Item value="add-slot">
               <Accordion.Control>Add Slot</Accordion.Control>
               <Accordion.Panel>
-                <AddSlotForm handleParsedDoc={handleDocumentUpdate} />
+                <AddSlotForm handleParsedDoc={handleDocumentUpdate} classOptions={classNames} />
+              </Accordion.Panel>
+            </Accordion.Item> 
+
+            <Accordion.Item value="add-class">
+              <Accordion.Control>Add Class</Accordion.Control>
+              <Accordion.Panel>
+                <AddClassForm handleParsedDoc={handleDocumentUpdate} slotOptions={slotNames} />
               </Accordion.Panel>
             </Accordion.Item>
 
