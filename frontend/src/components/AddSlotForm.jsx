@@ -19,7 +19,7 @@ const SelectTypeItem = forwardRef(({ label, description, ...rest }, ref) => (
   </div>
 ))
 
-function AddSlotForm({ handleParsedDoc, classOptions }) {
+function AddSlotForm({ handleParsedDoc, classOptions, enumOptions }) {
   const { register, handleSubmit, reset, control, formState: { errors } } = useForm()
 
   function handleAddSlot(formData) {
@@ -48,10 +48,15 @@ function AddSlotForm({ handleParsedDoc, classOptions }) {
       value: cls,
       description: 'A class defined by your schema'
     }))
+    .concat(enumOptions.map(enm => ({
+      label: enm,
+      value: enm,
+      description: 'An enum defined by your schema'
+    })))
     .concat(DEFAULT_TYPES)
 
   return (
-    <form onSubmit={handleSubmit(handleAddSlot)}>
+    <form onSubmit={handleSubmit(handleAddSlot)} autoComplete="off">
       <Text size="sm" mb="lg">
         LinkML encourages you to define class attributes outside of class definitions. We call those standalone 
         attributes "slots" and they can be reused in many classes. See the <a href="https://linkml.io/linkml/schemas/models.html#slots" target="_blank" rel="noopener">documentation</a> for 

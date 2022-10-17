@@ -25,7 +25,7 @@ function AddClassForm({ handleParsedDoc, slotOptions }) {
   }
 
   return (
-    <form onSubmit={handleSubmit(handleAddClass)}>
+    <form onSubmit={handleSubmit(handleAddClass)} autoComplete="off">
       <Text size="sm" mb="lg">
         Classes represent the main entities that you want to describe with your schema. The attributes of the class
         are described by slots. See the <a href="https://linkml.io/linkml/schemas/models.html#classes" target="_blank" rel="noopener">documentation</a> for 
