@@ -6,6 +6,9 @@ import YAML from 'yaml'
 import AddSlotForm from "../components/AddSlotForm";
 import AddClassForm from "../components/AddClassForm";
 import AddEnumForm from "../components/AddEnumForm";
+import Ajv from "ajv";
+import addFormats from "ajv-formats"
+import metaSchema from '../meta.schema.json'
 
 function Edit({ defaultSchema, projectMetadata, onAdvance }) {
   const [slotNames, setSlotNames] = useState([])
@@ -62,7 +65,17 @@ function Edit({ defaultSchema, projectMetadata, onAdvance }) {
   }
 
   function handleAdvance() {
-    onAdvance(editorRef.current.getValue())
+    const schema = editorRef.current.getValue()
+    const schemaObj = YAML.parse(schema)
+    const ajv = new Ajv({ strict: false, allErrors: true })
+    addFormats(ajv)
+    ajv.validate(metaSchema, schemaObj)
+    const errors = ajv.errors && ajv.errors.filter(err => !(err.instancePath === '/prefixes/linkml' && err.keyword === 'type'))
+    if (errors && errors.length) {
+      setDocErrors(errors.map(err => ({message: `In ${err.instancePath}: ${err.message}`})))
+    } else {
+      onAdvance(schema)
+    }
   }
 
   return (
@@ -90,7 +103,7 @@ function Edit({ defaultSchema, projectMetadata, onAdvance }) {
             value={doc.toString({ nullStr: '' })}
           />
           {docErrors && docErrors.map(err => (
-              <Alert title="YAML Error" color="red" key={err}><pre>{err.message}</pre></Alert>
+              <Alert title="Error" color="red" key={err} mt="sm"><pre>{err.message}</pre></Alert>
           ))}
         </Grid.Col>
         <Grid.Col span={4}>

@@ -13,6 +13,8 @@
     "@mantine/core": "^5.5.5",
     "@mantine/hooks": "^5.5.5",
     "@monaco-editor/react": "^4.4.6",
+    "ajv": "^8.11.0",
+    "ajv-formats": "^2.1.1",
     "file-saver": "^2.0.5",
     "lodash": "^4.17.21",
     "react": "^18.0.0",
