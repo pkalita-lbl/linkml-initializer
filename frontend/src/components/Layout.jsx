@@ -1,4 +1,4 @@
-import { AppShell, Header, Group, Title } from "@mantine/core";
+import { AppShell, Header, Group, Title, Container } from "@mantine/core";
 import React from "react";
 
 function Layout({ children }) {
@@ -14,7 +14,9 @@ function Layout({ children }) {
         </Header>
       }
     >
-      { children }
+      <Container size="lg">
+        { children }
+      </Container>
     </AppShell>
   )
 }

@@ -29,6 +29,7 @@ classes:
       license:
         required: true
         range: Licenses
+      project_schema:
         
 enums:
   Licenses:

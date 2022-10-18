@@ -7,6 +7,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 
+import yaml
+
 from linkml_initializer_backend.workspace import WorkspaceParameters
 
 app = FastAPI()
@@ -44,6 +46,10 @@ async def generate_workspace(params: WorkspaceParameters):
         output_dir=target,
         extra_context=params.__dict__
     )
+    with open(target / params.project_name / 'about.yaml') as about_file:
+        about = yaml.safe_load(about_file)
+    with open(target / params.project_name / about['source_schema_path'], 'w') as schema_file:
+        schema_file.write(params.project_schema)
     shutil.make_archive(target, 'zip', target)
     shutil.rmtree(target)
     return FileResponse(f'{target}.zip', filename=f'{params.project_name}.zip')

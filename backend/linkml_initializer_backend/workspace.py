@@ -36,6 +36,7 @@ class WorkspaceParameters(ConfiguredBaseModel):
     full_name: str = Field(None)
     email: str = Field(None)
     license: Licenses = Field(None)
+    project_schema: Optional[str] = Field(None)
     
 
 
