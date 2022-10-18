@@ -10,31 +10,38 @@ import Ajv from "ajv";
 import addFormats from "ajv-formats"
 import metaSchema from '../meta.schema.json'
 
-function Edit({ defaultSchema, projectMetadata, onAdvance }) {
-  const [slotNames, setSlotNames] = useState([])
-  const [classNames, setClassNames] = useState([])
-  const [enumNames, setEnumNames] = useState([])
-
-  let initialDoc;
-  if (defaultSchema) {
-    initialDoc = YAML.parseDocument(defaultSchema)
-    const parsedObj = initialDoc.toJS()
-    setSlotNames(Object.keys(parsedObj.slots || {}))
-    setClassNames(Object.keys(parsedObj.classes || {}))
-    setEnumNames(Object.keys(parsedObj.enums || {}))
+function initialize(schema, projectMetadata) {
+  if (schema) {
+    const doc = YAML.parseDocument(schema)
+    const obj = doc.toJS()
+    return [
+      doc,
+      Object.keys(obj.slots || {}),
+      Object.keys(obj.classes || {}),
+      Object.keys(obj.enums || {})
+    ]
   } else {
-    initialDoc = new YAML.Document({})
-    initialDoc.commentBefore = ' ' + projectMetadata.project_name
-    initialDoc.add({ key: 'id', value: `http://example.org/${projectMetadata.project_name}` })
-    initialDoc.add({ key: 'name', value: projectMetadata.project_name })
+    const doc = new YAML.Document({})
+    doc.commentBefore = ' ' + projectMetadata.project_name
+    doc.add({ key: 'id', value: `http://example.org/${projectMetadata.project_name}` })
+    doc.add({ key: 'name', value: projectMetadata.project_name })
     if (projectMetadata.project_description) {
-      initialDoc.add({ key: 'description', value: `\n${projectMetadata.project_description.trim()}`})
+      doc.add({ key: 'description', value: `\n${projectMetadata.project_description.trim()}`})
     }
-    initialDoc.add({ key: 'prefixes', value: { linkml: 'https://w3id.org/linkml/' } })
-    initialDoc.add({ key: 'imports', value: [ 'linkml:types' ]})
-    initialDoc.add({ key: 'default_range', value: 'string' })
+    doc.add({ key: 'prefixes', value: { linkml: 'https://w3id.org/linkml/' } })
+    doc.add({ key: 'imports', value: [ 'linkml:types' ]})
+    doc.add({ key: 'default_range', value: 'string' })
+    return [doc, [], [], []]
   }
+}
+
+function Edit({ defaultSchema, projectMetadata, onAdvance }) {
+  const [ initialDoc, initialSlots, initialClasses, initialEnums ] = initialize(defaultSchema, projectMetadata)
+
   const editorRef = useRef(null)
+  const [slotNames, setSlotNames] = useState(initialSlots)
+  const [classNames, setClassNames] = useState(initialClasses)
+  const [enumNames, setEnumNames] = useState(initialEnums)
   const [doc, setDoc] = useState(initialDoc)
   const [docErrors, setDocErrors] = useState(null)
 

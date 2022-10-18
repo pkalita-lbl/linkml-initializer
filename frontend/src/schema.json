@@ -33,6 +33,9 @@
             },
             "project_name": {
                "type": "string"
+            },
+            "project_schema": {
+               "type": "string"
             }
          },
          "required": [
@@ -68,6 +71,9 @@
          "type": "string"
       },
       "project_name": {
+         "type": "string"
+      },
+      "project_schema": {
          "type": "string"
       }
    },
