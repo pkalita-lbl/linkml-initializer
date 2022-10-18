@@ -4,7 +4,7 @@ import { useState } from 'react';
 import saveAs from 'file-saver'
 import { Box, Stepper } from '@mantine/core';
 import ProjectDetailsForm from '../components/ProjectDetailsForm';
-import Edit from "./Edit";
+import SchemaEditor from "../components/SchemaEditor";
 
 function Root() {
   const [filename, setFilename] = useState('')
@@ -49,7 +49,7 @@ function Root() {
           </Box>
         </Stepper.Step>
         <Stepper.Step label="Schema" allowStepSelect={active > 1}>
-          <Edit projectMetadata={projectMetadata} defaultSchema={projectSchema} onAdvance={handleSaveSchema} />
+          <SchemaEditor projectMetadata={projectMetadata} defaultSchema={projectSchema} onAdvance={handleSaveSchema} />
         </Stepper.Step>
         <Stepper.Step label="Download" allowStepSelect={active > 2}>
           <pre>{JSON.stringify(projectMetadata, null, 2)}</pre>

@@ -4,17 +4,12 @@ import { MantineProvider } from '@mantine/core';
 
 import Root from './routes/Root'
 import Layout from './components/Layout';
-import Edit from './routes/Edit';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Root />
   },
-  {
-    path: '/edit',
-    element: <Edit />
-  }
 ])
 
 function App() {
