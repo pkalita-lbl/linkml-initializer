@@ -1,27 +1,39 @@
 import React, { useState, useRef } from "react";
 
 import Editor from "@monaco-editor/react";
-import { Box, Grid, Accordion,  Alert } from "@mantine/core";
+import { Box, Grid, Accordion,  Alert, Button, Group } from "@mantine/core";
 import YAML from 'yaml'
 import AddSlotForm from "../components/AddSlotForm";
 import AddClassForm from "../components/AddClassForm";
 import AddEnumForm from "../components/AddEnumForm";
 
-const initialDoc = new YAML.Document({})
-initialDoc.commentBefore = ' My LinkML schema'
-initialDoc.add({ key: 'id', value: 'http://example.org/my-schema' })
-initialDoc.add({ key: 'name', value: 'my-schema' })
-initialDoc.add({ key: 'prefixes', value: { linkml: 'https://w3id.org/linkml/' } })
-initialDoc.add({ key: 'imports', value: [ 'linkml:types' ]})
-initialDoc.add({ key: 'default_range', value: 'string' })
-
-function Edit() {
-  const editorRef = useRef(null)
-  const [doc, setDoc] = useState(initialDoc)
-  const [docErrors, setDocErrors] = useState(null)
+function Edit({ defaultSchema, projectMetadata, onAdvance }) {
   const [slotNames, setSlotNames] = useState([])
   const [classNames, setClassNames] = useState([])
   const [enumNames, setEnumNames] = useState([])
+
+  let initialDoc;
+  if (defaultSchema) {
+    initialDoc = YAML.parseDocument(defaultSchema)
+    const parsedObj = initialDoc.toJS()
+    setSlotNames(Object.keys(parsedObj.slots || {}))
+    setClassNames(Object.keys(parsedObj.classes || {}))
+    setEnumNames(Object.keys(parsedObj.enums || {}))
+  } else {
+    initialDoc = new YAML.Document({})
+    initialDoc.commentBefore = ' ' + projectMetadata.project_name
+    initialDoc.add({ key: 'id', value: `http://example.org/${projectMetadata.project_name}` })
+    initialDoc.add({ key: 'name', value: projectMetadata.project_name })
+    if (projectMetadata.project_description) {
+      initialDoc.add({ key: 'description', value: `\n${projectMetadata.project_description.trim()}`})
+    }
+    initialDoc.add({ key: 'prefixes', value: { linkml: 'https://w3id.org/linkml/' } })
+    initialDoc.add({ key: 'imports', value: [ 'linkml:types' ]})
+    initialDoc.add({ key: 'default_range', value: 'string' })
+  }
+  const editorRef = useRef(null)
+  const [doc, setDoc] = useState(initialDoc)
+  const [docErrors, setDocErrors] = useState(null)
 
   function handleEditorDidMount(editor) {
     editorRef.current = editor
@@ -49,10 +61,14 @@ function Edit() {
     setEnumNames(Object.keys(parsedObj.enums || {}))
   }
 
+  function handleAdvance() {
+    onAdvance(editorRef.current.getValue())
+  }
+
   return (
     <Box sx={(theme) => ({
       borderWidth: '1px',
-      borderStyle: 'solid',
+      // borderStyle: 'solid',
       borderColor: theme.colors.gray,
       borderRadius: theme.radius.sm,
       padding: theme.spacing.sm
@@ -106,6 +122,9 @@ function Edit() {
           </Accordion>
         </Grid.Col>
       </Grid>
+      <Group position="right">
+        <Button onClick={handleAdvance}>Next</Button>
+      </Group>
     </Box>
   )
 }

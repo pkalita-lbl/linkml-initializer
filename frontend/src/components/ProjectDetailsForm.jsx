@@ -10,12 +10,13 @@ import schema from '../schema.json'
 delete schema['metamodel_version'];
 delete schema['version'];
 
-function ProjectDetailsForm({ onSubmit }) {
+function ProjectDetailsForm({ onSubmit, defaultValues }) {
   const { 
     register,
     handleSubmit,
     formState: { errors }
   } = useForm({
+    defaultValues: defaultValues,
     resolver: async (data, context, options) => {
       // you can debug your validation schema here
       const cleanData = pickBy(data)
@@ -69,7 +70,7 @@ function ProjectDetailsForm({ onSubmit }) {
         />
       </Box>
       
-      <Button type="submit">Submit</Button>
+      <Button type="submit">Next</Button>
     </form>
   )
 }
