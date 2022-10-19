@@ -1,6 +1,6 @@
 import React, { forwardRef } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Button, TextInput, Text, Checkbox, Select } from "@mantine/core";
+import { Button, TextInput, Text, Checkbox, Select, Stack } from "@mantine/core";
 import YAML from 'yaml'
 
 import types from '../types.json'
@@ -62,52 +62,49 @@ function AddSlotForm({ handleParsedDoc, classOptions, enumOptions }) {
         attributes "slots" and they can be reused in many classes. See the <a href="https://linkml.io/linkml/schemas/models.html#slots" target="_blank" rel="noopener">documentation</a> for 
         more information.
       </Text>
-      <TextInput 
-        label='Name' 
-        description='This is how you will refer to this slot in other parts of your schema. We recommend using snake_case.'
-        mb='sm'
-        error={errors.name?.message}
-        {...register("name", { required: 'A name is required' })} 
-      />
-      <TextInput 
-        label='Description' 
-        description='A description can help other schema authors and users understand what this slot is for.'
-        mb='sm'
-        {...register("description")} 
-      />
-      <Controller
-        name="range"
-        control={control}
-        render={({ field: { onChange, value } }) => (
-          <Select 
-            label='Range' 
-            data={types} 
-            itemComponent={SelectTypeItem}
-            searchable
-            maxDropdownHeight={400}
-            filter={(value, item) => {
-              const { label, description } = item;
-              const search = value.toLowerCase().trim()
-              return label.toLowerCase().includes(search) || description.toLowerCase().includes(search)
-            }}
-            value={value || null}
-            onChange={onChange}
-            description='The range defines the kind of values this slot can hold. Commonly used ranges like strings and integers are available by importing linkml:types. Classes and Enums you define can also be used.'
-            mb='sm'
-          />
-        )}
-      />
-      <Checkbox 
-        label='Multivalued' 
-        mb='md'
-        {...register("multivalued")} 
-      />
-      <Checkbox 
-        label='Required' 
-        mb='md'
-        {...register("required")} 
-      />
-      <Button type="submit">Add</Button>
+      <Stack spacing="sm">
+        <TextInput 
+          label='Name' 
+          description='This is how you will refer to this slot in other parts of your schema. We recommend using snake_case.'
+          error={errors.name?.message}
+          {...register("name", { required: 'A name is required' })} 
+        />
+        <TextInput 
+          label='Description' 
+          description='A description can help other schema authors and users understand what this slot is for.'
+          {...register("description")} 
+        />
+        <Controller
+          name="range"
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <Select 
+              label='Range' 
+              data={types} 
+              itemComponent={SelectTypeItem}
+              searchable
+              maxDropdownHeight={400}
+              filter={(value, item) => {
+                const { label, description } = item;
+                const search = value.toLowerCase().trim()
+                return label.toLowerCase().includes(search) || description.toLowerCase().includes(search)
+              }}
+              value={value || null}
+              onChange={onChange}
+              description='The range defines the kind of values this slot can hold. Commonly used ranges like strings and integers are available by importing linkml:types. Classes and Enums you define can also be used.'
+            />
+          )}
+        />
+        <Checkbox 
+          label='Multivalued' 
+          {...register("multivalued")} 
+        />
+        <Checkbox 
+          label='Required' 
+          {...register("required")} 
+        />
+        <Button type="submit">Add</Button>
+      </Stack>
     </form>
   )
 }

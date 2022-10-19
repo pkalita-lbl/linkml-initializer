@@ -86,29 +86,33 @@ function Edit({ defaultSchema, projectMetadata, onAdvance }) {
   }
 
   return (
-    <Box sx={(theme) => ({
-      borderWidth: '1px',
-      // borderStyle: 'solid',
-      borderColor: theme.colors.gray,
-      borderRadius: theme.radius.sm,
-      padding: theme.spacing.sm
-    })}>
+    <>
       <Grid>
         <Grid.Col span={8}>
-          <Editor
-            height="600px"
-            defaultLanguage="yaml"
-            onMount={handleEditorDidMount}
-            options={{
-              minimap: {
-                enabled: false
-              },
-              renderLineHighlight: 'none',
-              detectIndentation: false,
-              tabSize: 2
-            }}
-            value={doc.toString({ nullStr: '' })}
-          />
+          <Box sx={(theme) => ({
+            borderWidth: '1px',
+            borderStyle: 'solid',
+            borderColor: theme.colors.gray[3],
+            // paddingTop: theme.spacing.sm
+          })}>
+            <Editor
+              height="600px"
+              defaultLanguage="yaml"
+              onMount={handleEditorDidMount}
+              options={{
+                minimap: {
+                  enabled: false
+                },
+                renderLineHighlight: 'none',
+                detectIndentation: false,
+                tabSize: 2,
+                scrollbar: {
+                  verticalScrollbarSize: 8
+                }
+              }}
+              value={doc.toString({ nullStr: '' })}
+            />
+          </Box>
           {docErrors && docErrors.map(err => (
               <Alert title="Error" color="red" key={err} mt="sm"><pre>{err.message}</pre></Alert>
           ))}
@@ -142,10 +146,10 @@ function Edit({ defaultSchema, projectMetadata, onAdvance }) {
           </Accordion>
         </Grid.Col>
       </Grid>
-      <Group position="right">
+      <Group position="right" mt="lg">
         <Button onClick={handleAdvance}>Next</Button>
       </Group>
-    </Box>
+    </>
   )
 }
 

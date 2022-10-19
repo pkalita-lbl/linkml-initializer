@@ -2,7 +2,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form';
 import { ajvResolver } from '@hookform/resolvers/ajv';
 import { pickBy } from 'lodash'
-import { TextInput, Button, Title, Box, NativeSelect, Textarea } from '@mantine/core';
+import { TextInput, Button, Title, Box, NativeSelect, Textarea, Stack } from '@mantine/core';
 
 import schema from '../schema.json'
 
@@ -28,49 +28,55 @@ function ProjectDetailsForm({ onSubmit, defaultValues }) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Box mb="md">
-        <Title order={3}>Author</Title>
-        <TextInput 
-          label='Name'
-          error={errors.full_name?.message}
-          placeholder='Your Name'
-          {...register('full_name')}
-        />
-        <TextInput 
-          label='Email'
-          error={errors.email?.message}
-          placeholder='you@example.com'
-          {...register('email')}
-        />
-        <TextInput
-          label='GitHub username or organization'
-          error={errors.github_org?.message}
-          {...register('github_org')}
-        />
-      </Box>
-      
-      <Box mb="md">
-        <Title order={3}>Project</Title>
-        <TextInput 
-          label='Name'
-          error={errors.project_name?.message}
-          placeholder='my-schema'
-          {...register('project_name')}
-        />
-        <Textarea 
-          label='Description'
-          error={errors.project_description?.message}
-          {...register('project_description')}
-        />
-        <NativeSelect 
-          label='License'
-          error={errors.license?.message}
-          data={schema.$defs.Licenses.enum}
-          {...register('license')}
-        />
-      </Box>
-      
-      <Button type="submit">Next</Button>
+      <Stack spacing="lg">
+        <div>
+          <Title order={3}>Author</Title>
+          <Stack spacing="sm">
+            <TextInput 
+              label='Name'
+              error={errors.full_name?.message}
+              placeholder='Your Name'
+              {...register('full_name')}
+            />
+            <TextInput 
+              label='Email'
+              error={errors.email?.message}
+              placeholder='you@example.com'
+              {...register('email')}
+            />
+            <TextInput
+              label='GitHub username or organization'
+              error={errors.github_org?.message}
+              {...register('github_org')}
+            />
+          </Stack>
+        </div>
+        
+        <div>
+          <Title order={3}>Project</Title>
+          <Stack spacing="sm">
+            <TextInput 
+              label='Name'
+              error={errors.project_name?.message}
+              placeholder='my-schema'
+              {...register('project_name')}
+            />
+            <Textarea 
+              label='Description'
+              error={errors.project_description?.message}
+              {...register('project_description')}
+            />
+            <NativeSelect 
+              label='License'
+              error={errors.license?.message}
+              data={schema.$defs.Licenses.enum}
+              {...register('license')}
+            />
+          </Stack>
+        </div>
+        
+        <Button type="submit">Next</Button>
+      </Stack>
     </form>
   )
 }

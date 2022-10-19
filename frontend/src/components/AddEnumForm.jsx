@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Text, Textarea, TextInput } from '@mantine/core'
+import { Button, Stack, Text, Textarea, TextInput } from '@mantine/core'
 import { useForm } from 'react-hook-form'
 import { ensureYamlMap } from '../utils'
 import YAML from 'yaml'
@@ -36,29 +36,28 @@ function AddEnumForm({ handleParsedDoc }) {
         Enums represent a constrained set of options. See the <a href="https://linkml.io/linkml/schemas/models.html#enums" target="_blank" rel="noopener">documentation</a> for 
         more information.
       </Text>
-      <TextInput 
-        label='Name' 
-        description='This is how you will refer to this enum in other parts of your schema. We recommend using UpperCamelCase.'
-        mb='sm'
-        error={errors.name?.message}
-        {...register("name", { required: 'A name is required' })} 
-      />
-      <TextInput 
-        label='Description' 
-        description='A description can help other schema authors and users understand what this enum represents.'
-        mb='sm'
-        {...register("description")} 
-      />
-      <Textarea
-        label='Permissible Values'
-        description='List the permissible values for this enum, one per line.'
-        autosize
-        minRows={3}
-        maxRows={10}
-        mb='sm'
-        {...register("permissibleValues")}
-      />
-      <Button type="submit">Add</Button>
+      <Stack spacing="sm">
+        <TextInput 
+          label='Name' 
+          description='This is how you will refer to this enum in other parts of your schema. We recommend using UpperCamelCase.'
+          error={errors.name?.message}
+          {...register("name", { required: 'A name is required' })} 
+        />
+        <TextInput 
+          label='Description' 
+          description='A description can help other schema authors and users understand what this enum represents.'
+          {...register("description")} 
+        />
+        <Textarea
+          label='Permissible Values'
+          description='List the permissible values for this enum, one per line.'
+          autosize
+          minRows={3}
+          maxRows={10}
+          {...register("permissibleValues")}
+        />
+        <Button type="submit">Add</Button>
+      </Stack>
     </form>
   );
 }
