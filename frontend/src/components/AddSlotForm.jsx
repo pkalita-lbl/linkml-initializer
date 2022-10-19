@@ -1,7 +1,6 @@
 import React, { forwardRef } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Button, TextInput, Text, Checkbox, Select, Stack } from "@mantine/core";
-import YAML from 'yaml'
 
 import types from '../types.json'
 import { ensureYamlMap } from "../utils";
@@ -12,12 +11,14 @@ const DEFAULT_TYPES = Object.entries(types.types).map(([type, definition]) => ({
   description: definition.description
 }))
 
-const SelectTypeItem = forwardRef(({ label, description, ...rest }, ref) => (
-  <div ref={ref} {...rest}>
-    <Text size="sm">{label}</Text>
-    <Text size="xs" color="dimmed">{description}</Text>
-  </div>
-))
+const SelectTypeItem = forwardRef(function selectTypeItem({ label, description, ...rest }, ref) {
+  return (
+    <div ref={ref} {...rest}>
+      <Text size="sm">{label}</Text>
+      <Text size="xs" color="dimmed">{description}</Text>
+    </div>
+  )
+})
 
 function AddSlotForm({ handleParsedDoc, classOptions, enumOptions }) {
   const { register, handleSubmit, reset, control, formState: { errors } } = useForm()
@@ -59,7 +60,7 @@ function AddSlotForm({ handleParsedDoc, classOptions, enumOptions }) {
     <form onSubmit={handleSubmit(handleAddSlot)} autoComplete="off">
       <Text size="sm" mb="lg">
         LinkML encourages you to define class attributes outside of class definitions. We call those standalone 
-        attributes "slots" and they can be reused in many classes. See the <a href="https://linkml.io/linkml/schemas/models.html#slots" target="_blank" rel="noopener">documentation</a> for 
+        attributes &quot;slots&quot; and they can be reused in many classes. See the <a href="https://linkml.io/linkml/schemas/models.html#slots" target="_blank" rel="noreferrer">documentation</a> for 
         more information.
       </Text>
       <Stack spacing="sm">

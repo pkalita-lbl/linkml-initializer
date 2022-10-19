@@ -2,7 +2,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form';
 import { ajvResolver } from '@hookform/resolvers/ajv';
 import { pickBy } from 'lodash'
-import { TextInput, Button, Title, Box, NativeSelect, Textarea, Stack } from '@mantine/core';
+import { TextInput, Button, Title, NativeSelect, Textarea, Stack } from '@mantine/core';
 
 import schema from '../schema.json'
 

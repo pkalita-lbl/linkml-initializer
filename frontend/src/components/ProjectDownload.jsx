@@ -12,6 +12,7 @@ function ProjectDownload({ projectMetadata, projectSchema, onSubmit, onReady }) 
 
   useEffect(() => {
     (async () => {
+      onSubmit()
       setError('')
       setFilename(null)
       const { project_name } = projectRef.current
@@ -34,6 +35,8 @@ function ProjectDownload({ projectMetadata, projectSchema, onSubmit, onReady }) 
         setFilename(filename)
       } catch (e) {
         setError('Something went wrong')
+      } finally {
+        onReady()
       }
     })()
   }, [])

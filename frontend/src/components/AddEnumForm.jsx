@@ -33,7 +33,7 @@ function AddEnumForm({ handleParsedDoc }) {
   return (
     <form onSubmit={handleSubmit(handleAddEnum)} autoComplete="off">
       <Text size="sm" mb="lg">
-        Enums represent a constrained set of options. See the <a href="https://linkml.io/linkml/schemas/models.html#enums" target="_blank" rel="noopener">documentation</a> for 
+        Enums represent a constrained set of options. See the <a href="https://linkml.io/linkml/schemas/models.html#enums" target="_blank" rel="noreferrer">documentation</a> for 
         more information.
       </Text>
       <Stack spacing="sm">
