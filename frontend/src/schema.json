@@ -1,23 +1,49 @@
 {
    "$defs": {
+      "Licenses": {
+         "description": "",
+         "enum": [
+            "MIT",
+            "BSD-3",
+            "GNU GPL v3.0",
+            "Apache Software License 2.0"
+         ],
+         "title": "Licenses",
+         "type": "string"
+      },
       "WorkspaceParameters": {
          "additionalProperties": false,
          "description": "",
          "properties": {
-            "author": {
-               "pattern": "^[^<]+ <[^@]+@[^>]+>$",
+            "email": {
+               "pattern": "^[\\w\\-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$",
                "type": "string"
             },
-            "description": {
+            "full_name": {
                "type": "string"
             },
-            "name": {
+            "github_org": {
+               "type": "string"
+            },
+            "license": {
+               "$ref": "#/$defs/Licenses"
+            },
+            "project_description": {
+               "type": "string"
+            },
+            "project_name": {
+               "type": "string"
+            },
+            "project_schema": {
                "type": "string"
             }
          },
          "required": [
-            "name",
-            "author"
+            "project_name",
+            "github_org",
+            "full_name",
+            "email",
+            "license"
          ],
          "title": "WorkspaceParameters",
          "type": "object"
@@ -28,20 +54,35 @@
    "additionalProperties": false,
    "metamodel_version": "1.7.0",
    "properties": {
-      "author": {
-         "pattern": "^[^<]+ <[^@]+@[^>]+>$",
+      "email": {
+         "pattern": "^[\\w\\-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$",
          "type": "string"
       },
-      "description": {
+      "full_name": {
          "type": "string"
       },
-      "name": {
+      "github_org": {
+         "type": "string"
+      },
+      "license": {
+         "$ref": "#/$defs/Licenses"
+      },
+      "project_description": {
+         "type": "string"
+      },
+      "project_name": {
+         "type": "string"
+      },
+      "project_schema": {
          "type": "string"
       }
    },
    "required": [
-      "name",
-      "author"
+      "project_name",
+      "github_org",
+      "full_name",
+      "email",
+      "license"
    ],
    "title": "workspace",
    "type": "object",
