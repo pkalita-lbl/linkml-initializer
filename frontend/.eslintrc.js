@@ -23,5 +23,6 @@ module.exports = {
         "react": {
             "version": "detect"
         }
-    }
+    },
+    "ignorePatterns": [".eslintrc.js"]
 }
