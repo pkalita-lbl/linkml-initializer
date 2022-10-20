@@ -4,6 +4,10 @@ import { useForm } from 'react-hook-form'
 import { ensureYamlMap } from '../utils'
 import YAML from 'yaml'
 
+function makePermissibleValueKey(name) {
+  return name.toUpperCase().replace(/\W+/g, '_');
+}
+
 function AddEnumForm({ handleParsedDoc }) {
   const { register, handleSubmit, reset, formState: { errors } } = useForm()
 
@@ -17,7 +21,7 @@ function AddEnumForm({ handleParsedDoc }) {
 
       const permissibleValuesMap = new YAML.YAMLMap()
       formData.permissibleValues.trim().split('\n').forEach(pv => {
-        permissibleValuesMap.add({ key: pv, value: new YAML.Scalar() })
+        permissibleValuesMap.add({ key: makePermissibleValueKey(pv), value: { text: pv } })
       })
 
       const newEnum = {
