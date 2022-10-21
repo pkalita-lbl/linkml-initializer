@@ -25,10 +25,10 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-OUTPUT_DIRECTORY = Path(__file__).parent / "../../output"
+OUTPUT_DIRECTORY = Path(__file__).parent / "../output"
 OUTPUT_DIRECTORY.mkdir(exist_ok=True, parents=True)
 
-TEMPLATE_DIRECTORY = Path(__file__).parent / "../../linkml-project-cookiecutter"
+TEMPLATE_DIRECTORY = Path(__file__).parent / "../linkml-project-cookiecutter"
 
 
 @app.get("/")
