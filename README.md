@@ -12,6 +12,11 @@ docker compose up
 
 Once both services are up, visit http://localhost:80 to view the frontend.
 
+## Troubleshooting
+
+This repo uses submodules, be sure to either clone with `--recursive`,
+or do a `git submodule update` once you have cloned.
+
 ## Development
 
 `TODO`
