@@ -2,6 +2,17 @@
 
 A web wrapper for https://github.com/linkml/linkml-project-cookiecutter
 
+## Setup
+
+This repo uses git submodules. When cloning the repo use `git clone --recurse-submodules` 
+(or `--recursive` if using Git version 2.12 or lower). 
+
+If the repo was cloned without using `--recurse-submodules`, run the following:
+
+```shell
+git submodule update --init
+```
+
 ## Running with Docker
 
 Use Docker Compose to bring the backend and frontend services up:
@@ -11,11 +22,6 @@ docker compose up
 ```
 
 Once both services are up, visit http://localhost:80 to view the frontend.
-
-## Troubleshooting
-
-This repo uses submodules, be sure to either clone with `--recursive`,
-or do a `git submodule update` once you have cloned.
 
 ## Development
 
